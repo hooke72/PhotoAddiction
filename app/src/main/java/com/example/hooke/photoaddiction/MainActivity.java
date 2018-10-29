@@ -165,11 +165,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = mySharedPreferences.edit();
         editor.putInt(APP_PREFERENCES_MINUTE, minute);
         editor.apply();
-
     }
 
     public void setAlarmReceiver() {
-        alarmReceiver.setAlarm(this.getApplicationContext());
+        alarmReceiver.setAlarm(getApplicationContext());
     }
 
     protected void showInputDialog() {
