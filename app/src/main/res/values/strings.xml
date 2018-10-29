@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PhotoAddiction</string>
+    <string name="action_settings">Settings</string>
+    <string name="blank_photo">Some photo</string>
+    <string name="i_need_permision">If you reject permission,you can not use this service \nPlease turn on permissions at [Setting] > [Permission]</string>
+    <string name="bye_bye_no_permission">So sad. Bye.</string>
+    <string name="action_notifier">Set reminder</string>
+    <string name="action_stop">Stop reminder</string>
+</resources>
