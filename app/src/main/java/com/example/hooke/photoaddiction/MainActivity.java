@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_stop) {
             setMinute(0);
+            alarmReceiver.stopAlarm(getApplicationContext());
         }
         return super.onOptionsItemSelected(item);
     }

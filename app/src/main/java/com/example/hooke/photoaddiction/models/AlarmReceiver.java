@@ -38,6 +38,12 @@ public class AlarmReceiver extends BroadcastReceiver {
        }
     }
 
+    public void stopAlarm(Context context){
+        alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmIntent = PendingIntent.getBroadcast(context, 0, new Intent(context, AlarmReceiver.class), 0);
+        alarmMgr.cancel(alarmIntent);
+    }
+
     private void sayNotify(Context context) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         Intent intent = new Intent(context, MainActivity.class);
