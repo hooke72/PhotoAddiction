@@ -10,11 +10,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -32,8 +29,6 @@ import com.example.hooke.photoaddiction.models.AlarmReceiver;
 import com.example.hooke.photoaddiction.models.Photo;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-import com.nabinbhandari.android.permissions.PermissionHandler;
-import com.nabinbhandari.android.permissions.Permissions;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -106,23 +101,6 @@ public class MainActivity extends AppCompatActivity {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.CAMERA)
                 .check();
-    }
-
-    private void letsCheckPermission2() {
-
-        String rationale = "Please provide location permission so that you can ...";
-        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA};
-        Permissions.Options options = new Permissions.Options()
-                .setRationaleDialogTitle("Info")
-                .setSettingsDialogTitle("Warning");
-        Permissions.check(this/*context*/, permissions, rationale, options, new PermissionHandler() {
-            @Override
-            public void onGranted() {
-                setupRecycleView();
-            }
-        });
     }
 
     private void setupRecycleView() {
