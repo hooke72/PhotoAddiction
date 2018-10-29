@@ -13,6 +13,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +32,8 @@ import com.example.hooke.photoaddiction.models.AlarmReceiver;
 import com.example.hooke.photoaddiction.models.Photo;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.nabinbhandari.android.permissions.PermissionHandler;
+import com.nabinbhandari.android.permissions.Permissions;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -104,15 +108,35 @@ public class MainActivity extends AppCompatActivity {
                 .check();
     }
 
+    private void letsCheckPermission2() {
+
+        String rationale = "Please provide location permission so that you can ...";
+        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA};
+        Permissions.Options options = new Permissions.Options()
+                .setRationaleDialogTitle("Info")
+                .setSettingsDialogTitle("Warning");
+        Permissions.check(this/*context*/, permissions, rationale, options, new PermissionHandler() {
+            @Override
+            public void onGranted() {
+                setupRecycleView();
+            }
+        });
+    }
+
     private void setupRecycleView() {
-        File photoDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM).getPath());
-        mRecyclerView = (RecyclerView) findViewById(R.id.photo_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new StaggeredGridLayoutManager(2, 1);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        photoAdapter = new PhotoAdapter(initPhotoList(photoDir));
-        mRecyclerView.setAdapter(photoAdapter);
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+            File photoDir = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM).getPath());
+            mRecyclerView = (RecyclerView) findViewById(R.id.photo_recycler_view);
+            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new StaggeredGridLayoutManager(2, 1);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            photoAdapter = new PhotoAdapter(initPhotoList(photoDir));
+            mRecyclerView.setAdapter(photoAdapter);
+        }
     }
 
     private void setupFAB() {
@@ -156,14 +180,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static int getMinute() {
-        return mySharedPreferences.getInt(APP_PREFERENCES_MINUTE,0);
+        return mySharedPreferences.getInt(APP_PREFERENCES_MINUTE, 0);
     }
-    public void setMinute(int minute){
+
+    public void setMinute(int minute) {
         SharedPreferences.Editor editor = mySharedPreferences.edit();
         editor.putInt(APP_PREFERENCES_MINUTE, minute);
         editor.apply();
 
     }
+
     public void setAlarmReceiver() {
         alarmReceiver.setAlarm(this.getApplicationContext());
     }
@@ -175,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilder.setView(promptView);
 
         final EditText minuteET = (EditText) promptView.findViewById(R.id.minute_edittext);
-        minuteET.setText(getMinute()+"");
+        minuteET.setText(getMinute() + "");
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
