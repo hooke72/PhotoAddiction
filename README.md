@@ -1,6 +1,8 @@
 # PhotoAddiction
 testapp
 
+# deprecated
+
 It's app solved a this task:
 
 Create a simple Camera application (any external links can be used, just make it fast). 
